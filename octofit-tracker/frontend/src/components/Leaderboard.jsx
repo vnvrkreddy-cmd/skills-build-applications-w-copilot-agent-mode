@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react'
-import { displayValue, fetchCollection } from '../api.js'
+import { API_BASE_URL, displayValue, normalizeCollection } from '../api.js'
 
 export default function Leaderboard() {
   const [entries, setEntries] = useState([])
   const [error, setError] = useState('')
 
   useEffect(() => {
-    fetchCollection('/api/leaderboard/', 'leaderboard').then(setEntries).catch((loadError) => setError(loadError.message))
+    fetch(`${API_BASE_URL}/api/leaderboard/`).then((response) => {
+      if (!response.ok) throw new Error(`Unable to load leaderboard (${response.status})`)
+      return response.json()
+    }).then((payload) => setEntries(normalizeCollection(payload, 'leaderboard'))).catch((loadError) => setError(loadError.message))
   }, [])
 
   return <RankedList title="Leaderboard" eyebrow="Friendly competition" description="A quick read on who is building momentum." rows={entries} error={error} />

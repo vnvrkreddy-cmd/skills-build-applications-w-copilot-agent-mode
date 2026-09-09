@@ -13,11 +13,14 @@ export async function fetchCollection(endpoint, resource) {
 
   const payload = await response.json()
 
+  return normalizeCollection(payload, resource)
+}
+
+export function normalizeCollection(payload, resource) {
   if (Array.isArray(payload)) return payload
   if (Array.isArray(payload.results)) return payload.results
   if (Array.isArray(payload.data)) return payload.data
   if (Array.isArray(payload[resource])) return payload[resource]
-
   return []
 }
 
