@@ -6,7 +6,7 @@ export default function Activities() {
   const [error, setError] = useState('')
 
   useEffect(() => {
-    fetchCollection('activities').then(setActivities).catch((loadError) => setError(loadError.message))
+    fetchCollection('/api/activities/', 'activities').then(setActivities).catch((loadError) => setError(loadError.message))
   }, [])
 
   return (

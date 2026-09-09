@@ -6,7 +6,7 @@ export default function Leaderboard() {
   const [error, setError] = useState('')
 
   useEffect(() => {
-    fetchCollection('leaderboard').then(setEntries).catch((loadError) => setError(loadError.message))
+    fetchCollection('/api/leaderboard/', 'leaderboard').then(setEntries).catch((loadError) => setError(loadError.message))
   }, [])
 
   return <RankedList title="Leaderboard" eyebrow="Friendly competition" description="A quick read on who is building momentum." rows={entries} error={error} />

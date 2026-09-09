@@ -6,7 +6,7 @@ export default function Users() {
   const [error, setError] = useState('')
 
   useEffect(() => {
-    fetchCollection('users').then(setUsers).catch((loadError) => setError(loadError.message))
+    fetchCollection('/api/users/', 'users').then(setUsers).catch((loadError) => setError(loadError.message))
   }, [])
 
   return (

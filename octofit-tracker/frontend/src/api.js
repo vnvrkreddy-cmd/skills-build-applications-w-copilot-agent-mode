@@ -4,8 +4,8 @@ export const API_BASE_URL = codespaceName
   ? `https://${codespaceName}-8000.app.github.dev`
   : 'http://localhost:8000'
 
-export async function fetchCollection(resource) {
-  const response = await fetch(`${API_BASE_URL}/api/${resource}/`)
+export async function fetchCollection(endpoint, resource) {
+  const response = await fetch(`${API_BASE_URL}${endpoint}`)
 
   if (!response.ok) {
     throw new Error(`Unable to load ${resource} (${response.status})`)
