@@ -1,4 +1,5 @@
 import express from 'express'
+import { apiBaseUrl } from './config/api.js'
 import { connectDatabase } from './config/database.js'
 import apiRouter from './routes/api.js'
 
@@ -11,7 +12,7 @@ app.use('/api', apiRouter)
 const start = async () => {
   await connectDatabase()
   app.listen(port, () => {
-    console.log(`OctoFit API listening on port ${port}`)
+    console.log(`OctoFit API listening at ${apiBaseUrl}`)
   })
 }
 
