@@ -1,6 +1,9 @@
 import { Router } from 'express'
 import { Activity } from '../models/Activity.js'
+import { LeaderboardEntry } from '../models/LeaderboardEntry.js'
+import { Team } from '../models/Team.js'
 import { User } from '../models/User.js'
+import { Workout } from '../models/Workout.js'
 import { apiBaseUrl } from '../config/api.js'
 
 const apiRouter = Router()
@@ -29,6 +32,28 @@ apiRouter.get('/activities', async (_request, response) => {
     .sort({ recordedAt: -1 })
     .lean()
   response.json(activities)
+})
+
+apiRouter.get('/teams', async (_request, response) => {
+  const teams = await Team.find()
+    .populate('captain', 'name email avatar')
+    .populate('members', 'name email avatar')
+    .sort({ name: 1 })
+    .lean()
+  response.json(teams)
+})
+
+apiRouter.get('/leaderboard', async (_request, response) => {
+  const entries = await LeaderboardEntry.find()
+    .populate('user', 'name email avatar')
+    .sort({ rank: 1 })
+    .lean()
+  response.json(entries)
+})
+
+apiRouter.get('/workouts', async (_request, response) => {
+  const workouts = await Workout.find().sort({ title: 1 }).lean()
+  response.json(workouts)
 })
 
 export default apiRouter

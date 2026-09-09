@@ -1,12 +1,16 @@
 import { useEffect, useState } from 'react'
-import { API_BASE_URL, displayValue, normalizeCollection } from '../api.js'
+import { displayValue, normalizeCollection } from '../api.js'
+
+const apiBaseUrl = import.meta.env.VITE_CODESPACE_NAME?.trim()
+  ? `https://${import.meta.env.VITE_CODESPACE_NAME.trim()}-8000.app.github.dev/api/leaderboard/`
+  : 'http://localhost:8000/api/leaderboard/'
 
 export default function Leaderboard() {
   const [entries, setEntries] = useState([])
   const [error, setError] = useState('')
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/api/leaderboard/`).then((response) => {
+    fetch(apiBaseUrl).then((response) => {
       if (!response.ok) throw new Error(`Unable to load leaderboard (${response.status})`)
       return response.json()
     }).then((payload) => setEntries(normalizeCollection(payload, 'leaderboard'))).catch((loadError) => setError(loadError.message))

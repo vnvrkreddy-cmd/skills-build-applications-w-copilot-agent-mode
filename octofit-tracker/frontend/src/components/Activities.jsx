@@ -1,12 +1,16 @@
 import { useEffect, useState } from 'react'
-import { API_BASE_URL, displayValue, normalizeCollection } from '../api.js'
+import { displayValue, normalizeCollection } from '../api.js'
+
+const apiBaseUrl = import.meta.env.VITE_CODESPACE_NAME?.trim()
+  ? `https://${import.meta.env.VITE_CODESPACE_NAME.trim()}-8000.app.github.dev/api/activities/`
+  : 'http://localhost:8000/api/activities/'
 
 export default function Activities() {
   const [activities, setActivities] = useState([])
   const [error, setError] = useState('')
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/api/activities/`).then((response) => {
+    fetch(apiBaseUrl).then((response) => {
       if (!response.ok) throw new Error(`Unable to load activities (${response.status})`)
       return response.json()
     }).then((payload) => setActivities(normalizeCollection(payload, 'activities'))).catch((loadError) => setError(loadError.message))

@@ -1,12 +1,16 @@
 import { useEffect, useState } from 'react'
-import { API_BASE_URL, displayValue, normalizeCollection } from '../api.js'
+import { displayValue, normalizeCollection } from '../api.js'
+
+const apiBaseUrl = import.meta.env.VITE_CODESPACE_NAME?.trim()
+  ? `https://${import.meta.env.VITE_CODESPACE_NAME.trim()}-8000.app.github.dev/api/users/`
+  : 'http://localhost:8000/api/users/'
 
 export default function Users() {
   const [users, setUsers] = useState([])
   const [error, setError] = useState('')
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/api/users/`).then((response) => {
+    fetch(apiBaseUrl).then((response) => {
       if (!response.ok) throw new Error(`Unable to load users (${response.status})`)
       return response.json()
     }).then((payload) => setUsers(normalizeCollection(payload, 'users'))).catch((loadError) => setError(loadError.message))
