@@ -1,18 +1,15 @@
 import express from 'express'
-import mongoose from 'mongoose'
+import { connectDatabase } from './config/database.js'
+import apiRouter from './routes/api.js'
 
 const app = express()
 const port = Number(process.env.PORT ?? 8000)
-const mongoUri = process.env.MONGODB_URI ?? 'mongodb://127.0.0.1:27017/octofit_db'
 
 app.use(express.json())
-
-app.get('/api/health', (_request, response) => {
-  response.json({ status: 'ok', service: 'octofit-tracker-api' })
-})
+app.use('/api', apiRouter)
 
 const start = async () => {
-  await mongoose.connect(mongoUri)
+  await connectDatabase()
   app.listen(port, () => {
     console.log(`OctoFit API listening on port ${port}`)
   })
